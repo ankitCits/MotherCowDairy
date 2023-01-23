@@ -17,7 +17,7 @@ export const userLogin = (email,password) => {
       body: formdata,
       redirect: "follow"
     };
-    console.log("REquest_Option",requestOptions)
+    console.log("REquest_Option",requestOptions.body)
     fetch(`${BASE_URL}user/login/`, requestOptions)
       .then(response => response.json())
       .then(result => {

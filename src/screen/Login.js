@@ -30,13 +30,19 @@ const Login = ({ navigation }) => {
   const { onAuthentication } = useContext(AuthContext);
 
   const submitLogin = async () => {
-    // await onAuthentication('true');
     if(name != '' && password != ''){
       let payload = {
         email:name,
         password:password
       }
       let response = await userLogin(name,password)
+      if(response){
+        console.log("Token Response",response.auth_token)
+        if(response.auth_token)
+        await onAuthentication(response.auth_token);
+      }else{
+        alert('Please check detail again')
+      }
     }else{
       alert('Please check detail again')
     }
@@ -70,7 +76,7 @@ const Login = ({ navigation }) => {
               // color={"#0000"}
               placeholder="Email id"
               placeholderTextColor={"#7A869A"}
-              // left={}
+              autoCapitalize='none'
               onChangeText={(name) => {
                 setName(name);
               }}
@@ -87,6 +93,7 @@ const Login = ({ navigation }) => {
             <TextInput
               // start={}
               // color={"#0000"}
+              autoCapitalize='none'
               secureTextEntry={true}
               placeholder="Password"
               placeholderTextColor={"#7A869A"}
