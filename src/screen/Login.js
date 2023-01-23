@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Text,
   View,
@@ -12,24 +12,36 @@ import {
   StatusBar,
   TouchableOpacity
 } from "react-native";
-import CheckBox from "@react-native-community/checkbox";
 import PasswordL from "react-native-vector-icons/SimpleLineIcons";
-// import background from '../img/splashscreen.png';
 import login from "../assets/img/header.png";
 import footer from "../assets/img/wave2.png";
 import mail from "../assets/icon/mail.png";
-import background from "../assets/img/background.jpeg";
-import centerlogo from "../assets/img/mothercow.png";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import Icon from "react-native-vector-icons/MaterialIcons";
-// const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
+import AuthContext from "../Context/AuthContext";
+import { userLogin } from "../Api/auth";
 const Login = ({ navigation }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [isSelected, setSelection] = useState(false);
+  const { onAuthentication } = useContext(AuthContext);
+
+  const submitLogin = async () => {
+    // await onAuthentication('true');
+    if(name != '' && password != ''){
+      let payload = {
+        email:name,
+        password:password
+      }
+      let response = await userLogin(name,password)
+    }else{
+      alert('Please check detail again')
+    }
+
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
@@ -55,11 +67,11 @@ const Login = ({ navigation }) => {
             <Image source={mail} style={styles.icons} />
             <TextInput
               // style={styles.input}
-              color={"#0000"}
+              // color={"#0000"}
               placeholder="Email id"
               placeholderTextColor={"#7A869A"}
               // left={}
-              onChangeText={() => {
+              onChangeText={(name) => {
                 setName(name);
               }}
               value={name}
@@ -74,11 +86,11 @@ const Login = ({ navigation }) => {
             />
             <TextInput
               // start={}
-              color={"#0000"}
+              // color={"#0000"}
               secureTextEntry={true}
               placeholder="Password"
               placeholderTextColor={"#7A869A"}
-              onChangeText={() => {
+              onChangeText={(password) => {
                 setPassword(password);
               }}
               value={password}
@@ -102,7 +114,10 @@ const Login = ({ navigation }) => {
               <Text style={styles.label1}>Forget password?</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.pressable}>
+          <TouchableOpacity
+            style={styles.pressable}
+            onPress={() => submitLogin()}
+          >
             <Text
               style={{
                 textAlign: "center",
@@ -185,9 +200,9 @@ const styles = StyleSheet.create({
     marginTop: hp("0.7%"),
     color: "#000000",
     // backgroundColor: '#F4BD2F',
-    fontWeight: "bold"
+    fontWeight: "400",
     // fontFamily: 'Roboto',
-    // justifyContent :"center"
+    alignItems: "center"
   },
   label1: {
     marginleft: wp("2%"),
@@ -198,8 +213,8 @@ const styles = StyleSheet.create({
     // fontFamily: 'Roboto',
   },
   boxes: {
-    flexDirection: "row"
-    // justifyContent:'center'
+    flexDirection: "row",
+    justifyContent: "center"
   },
   pressable: {
     width: wp("80%"),

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Text,
   View,
@@ -23,12 +23,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import AuthContext from "../Context/AuthContext";
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
 const Verification = ({ navigation }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [isSelected, setSelection] = useState(false);
+  const { onAuthentication } = useContext(AuthContext);
+
+  const submitLogin = async () => {
+    await onAuthentication('true');
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -100,7 +106,7 @@ const Verification = ({ navigation }) => {
             </View>
 
             <TouchableOpacity style={styles.pressable}
-            // onPress={() => navigation.navigate("ForgetVerified")}
+            onPress={() => submitLogin()}
             >
               <Text
                 style={{

@@ -219,12 +219,13 @@ const SignUp = ({ navigation }) => {
                 iconStyle={styles.iconStyle}
                 data={data}
                 search
-                color="black"
+                // placeholderTextColor={'red'}
+                // color="red"
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder="Select item"
-                searchPlaceholder="Search..."
+                placeholder="State"
+                searchPlaceholder="Search State Name..."
                 value={value}
                 onChange={item => {
                   setValue(item.value);
@@ -424,7 +425,8 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   placeholderStyle: {
-    fontSize: 16
+    fontSize: 16,
+    color:'#7A869A'
   },
   selectedTextStyle: {
     fontSize: 16

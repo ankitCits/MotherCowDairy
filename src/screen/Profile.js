@@ -30,7 +30,7 @@ const Profile = ({ navigation }) => {
                   marginLeft: "25%",
                   marginTop: "5%",
                   height: 20,
-                  width: 20
+                  width: 20,
                 }}
               />
             </TouchableOpacity>
@@ -55,13 +55,13 @@ const Profile = ({ navigation }) => {
           source={require("../assets/img/Myprofile.png")}
           style={{
             // marginLeft: wp('5%'),
-            width: wp("32%"),
-            height: hp("15%"),
+            width: 100,
+            height: 100,
             alignSelf: "center",
             borderWidth: 1,
             borderColor: "#EAE8F2",
-            borderRadius: 55,
-            marginTop: hp("3%")
+            borderRadius: 100/2,
+            marginTop: hp("2%")
           }}
         />
         <Text

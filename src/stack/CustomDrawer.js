@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import {
   DrawerContentScrollView,
+  DrawerItem,
   DrawerItemList
 } from "@react-navigation/drawer";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import AuthContext from "../Context/AuthContext";
 
 const CustomDrawer = props => {
+  const { userSignOut } = useContext(AuthContext);
+  const signOut = async () => {
+    await userSignOut();
+  };
   return (
     <View style={styles.container}>
       <DrawerContentScrollView {...props}>
@@ -36,6 +42,16 @@ const CustomDrawer = props => {
           </Text>
         </View>
         <DrawerItemList {...props} />
+        <DrawerItem
+          label="Logout"
+          onPress={() => signOut()}
+
+          // style={{ width: width }}
+          //               icon={({ focused, color, size }) => <Icon color={color} size={size} name={focused ? `exit` : `exit-outline`} />}
+          //               label={`Sign Out`}
+          //               labelStyle={styles.signOutLabel}
+          //               onPress={() => signOut()}
+        />
       </DrawerContentScrollView>
     </View>
   );

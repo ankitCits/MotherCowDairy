@@ -72,9 +72,11 @@ const AppStack = () => {
         }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Logout"
-        component={ForgetPassword}
+        component={async()=>{
+          await userSignOut();
+        }}
         options={{
           headerShown: false,
           drawerIcon: ({ color }) =>
@@ -84,7 +86,7 @@ const AppStack = () => {
             // />
             <Logout name="logout" size={20} color="#000" />
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };
