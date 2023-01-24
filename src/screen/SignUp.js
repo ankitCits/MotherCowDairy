@@ -9,7 +9,9 @@ import {
   Pressable,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 import PasswordL from "react-native-vector-icons/SimpleLineIcons";
@@ -29,23 +31,99 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { userCreate } from "../Api/userCreate";
 const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" }
+  { label: "NSW|New South Wales", value: "1" },
+  { label: "QLD|Queensland", value: "2" },
+  { label: "SA|South Australia", value: "3" },
+  { label: "TAS|Tasmania", value: "4" },
+  { label: "VIC|Victoria", value: "5" },
+  { label: "WA|Western Australia", value: "6" },
+  { label: "ACT|Australian Capital Territory", value: "7" },
+  { label: "NT|Northern Territory", value: "8" }
 ];
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
-const SignUp = ({ navigation }) => {
+const SignUp = ({ navigation,props }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
+  const [address, setAddress] = useState();
+  const [addressp, setAddressp] = useState();
+  const [addressa, setAddressa] = useState();
+  const [cname, setCname] = useState();
+  const [phoneno, setPhone] = useState();
+  const [city, setCity] = useState();
+  const [country, setCountry] = useState();
+  const [state, setState] = useState();
+  const [zipcode, setZipcode] = useState();
+  const [email, setEmail] = useState();
   const [isSelected, setSelection] = useState(false);
   const [value, setValue] = useState(null);
+  const [loader, setLoader] = useState(false);
+
+  const submitLogin = async () => {
+    navigation.navigate("Verification");
+    if (
+      name != "" ||
+      password != "" ||
+      address != "" ||
+      addressa != "" ||
+      addressp != "" ||
+      cname != "" ||
+      phoneno != "" ||
+      country != "" ||
+      city !== "" ||
+      state != "" ||
+      zipcode != "" ||
+      email != ""
+    ) {
+      setLoader(true)
+      let payload = {
+        email: email,
+        password: password,
+        name: cname,
+        bussiness_name: address,
+        address1: addressp,
+        address2: addressa,
+        city: city,
+        state: state,
+        zip_code: zipcode,
+        phone: phoneno,
+        cname: cname,
+        country: country
+      };
+      let response = await userCreate(
+        email,
+        password,
+        name,
+        address,
+        addressa,
+        addressp,
+        cname,
+        city,
+        country,
+        phoneno,
+        state,
+        zipcode
+      );
+      if (response) {
+        console.log("Token Response", response);
+        if (response.email_verified == false) {
+          setLoader(false)
+          navigation.navigate("Verification", response);
+        }
+        // await onAuthentication(response.auth_token);
+      } else {
+        setLoader(false)
+        alert("Please check detail again");
+      }
+    } else {
+      setLoader(false)
+      alert("Please check detail again");
+    }
+    setLoader(false)
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -71,7 +149,7 @@ const SignUp = ({ navigation }) => {
               <Image source={user} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Business Name"
                 placeholderTextColor={"#7A869A"}
                 // left={}
@@ -85,56 +163,56 @@ const SignUp = ({ navigation }) => {
               <Image source={mark} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Business Address"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={address => {
+                  setAddress(address);
                 }}
-                value={name}
+                value={address}
               />
             </View>
             <View style={styles.input}>
               <Image source={user} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Contact Person Name"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={cname => {
+                  setCname(cname);
                 }}
-                value={name}
+                value={cname}
               />
             </View>
             <View style={styles.input}>
               <Image source={mail} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Email id"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={email => {
+                  setEmail(email);
                 }}
-                value={name}
+                value={email}
               />
             </View>
             <View style={styles.input}>
               <Image source={phone} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Phone No"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={phoneno => {
+                  setPhone(phoneno);
                 }}
-                value={name}
+                value={phoneno}
               />
             </View>
             <View style={styles.input}>
@@ -146,7 +224,7 @@ const SignUp = ({ navigation }) => {
               />
               <TextInput
                 // start={}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 secureTextEntry={true}
                 placeholder="Password"
                 placeholderTextColor={"#7A869A"}
@@ -160,41 +238,41 @@ const SignUp = ({ navigation }) => {
               <Image source={location} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Address line 1"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={addressp => {
+                  setAddressp(addressp);
                 }}
-                value={name}
+                value={addressp}
               />
             </View>
             <View style={styles.input}>
               <Image source={location} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Address line 2"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={addressa => {
+                  setAddressa(addressa);
                 }}
-                value={name}
+                value={addressa}
               />
             </View>
             <View style={styles.input}>
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={Platform.OS == "android" ? "#000" : "black"}
                 placeholder="Country"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={country => {
+                  setCountry(country);
                 }}
-                value={name}
+                value={country}
               />
             </View>
             <View style={styles.input}>
@@ -204,10 +282,10 @@ const SignUp = ({ navigation }) => {
                 placeholder="City"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={city => {
+                  setCity(city);
                 }}
-                value={name}
+                value={city}
               />
             </View>
             <View style={{ width: wp("90%"), alignSelf: "center" }}>
@@ -226,9 +304,9 @@ const SignUp = ({ navigation }) => {
                 valueField="value"
                 placeholder="State"
                 searchPlaceholder="Search State Name..."
-                value={value}
+                // value={state}
                 onChange={item => {
-                  setValue(item.value);
+                  setState(item.label);
                 }}
               />
             </View>
@@ -239,10 +317,10 @@ const SignUp = ({ navigation }) => {
                 placeholder="Zip Code"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={zipcode => {
+                  setZipcode(zipcode);
                 }}
-                value={name}
+                value={zipcode}
               />
             </View>
 
@@ -278,18 +356,32 @@ const SignUp = ({ navigation }) => {
             </View>
             <TouchableOpacity
               style={styles.pressable}
-              onPress={() => navigation.navigate("Verification")}
+              onPress={() => [
+                // navigation.navigate("Verification"),
+                submitLogin()
+              ]}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  alignContent: "center"
-                }}
-              >
-                Submit
-              </Text>
+              {loader
+                ? <View
+                    style={{
+                      textAlign: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    <ActivityIndicator size="small" color={"#fff"} />
+                  </View>
+                : <Text
+                    style={{
+                      textAlign: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    Submit
+                  </Text>}
             </TouchableOpacity>
             <View style={styles.sign}>
               <Text style={styles.label1}>Already have an account?</Text>
@@ -361,7 +453,7 @@ const styles = StyleSheet.create({
   label: {
     marginleft: wp("2%"),
     marginTop: hp("0.7%"),
-    color: "#000000",
+    color: "#00000",
     // backgroundColor: '#F4BD2F',
     fontWeight: "bold"
     // fontFamily: "Roboto"
@@ -426,7 +518,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    color:'#7A869A'
+    color: "#7A869A"
   },
   selectedTextStyle: {
     fontSize: 16

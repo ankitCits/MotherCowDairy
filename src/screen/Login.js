@@ -23,7 +23,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AuthContext from "../Context/AuthContext";
 import { userLogin } from "../Api/auth";
-const Login = ({ navigation }) => {
+const Login = ({ navigation,props }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [isSelected, setSelection] = useState(false);
@@ -123,7 +123,7 @@ const Login = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.pressable}
-            onPress={() => submitLogin()}
+            onPress={() => [navigation.navigate("Home"),submitLogin()]}
           >
             <Text
               style={{

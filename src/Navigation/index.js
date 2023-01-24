@@ -7,7 +7,7 @@ import PrivateRoute from '../stack/PrivateStack';
 
 import AuthContext from '../Context/AuthContext';
 import {ActivityIndicator, View} from 'react-native';
-const Navigation = () => {
+const Navigation = ({props}) => {
   const authContext = useContext(AuthContext);
   const {userToken, isLoading} = authContext;
 // const userToken=null

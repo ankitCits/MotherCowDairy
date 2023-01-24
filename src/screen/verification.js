@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -24,16 +24,46 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import AuthContext from "../Context/AuthContext";
+import { emailVerify } from "../Api/emailVerify";
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
-const Verification = ({ navigation }) => {
-  const [name, setName] = useState();
-  const [password, setPassword] = useState();
+const Verification = ({ navigation,props }) => {
+  const [otp, setOtp] = useState();
+  const [email, setEmail] = useState();
   const [isSelected, setSelection] = useState(false);
   const { onAuthentication } = useContext(AuthContext);
 
+
+  // const submitLogin = async () => {
+  //   await onAuthentication('true');
+  // };
+
+  //call verfit api auto with props email
+
+
+
+
+
+  //Submit OTP When User Entered.
   const submitLogin = async () => {
-    await onAuthentication('true');
+    if(otp != '' && email != ''){
+      let payload = {
+        //check email from props
+        email:email,
+        otp :otp,
+      }
+      let response = await emailVerify(email,otp)
+      if(response){
+        console.log("Token Response",response.auth_token)
+        if(response.auth_token)
+        await onAuthentication(response.auth_token);
+      }else{
+        alert('Please check detail again')
+      }
+    }else{
+      alert('Please check detail again')
+    }
+
   };
   return (
     <SafeAreaView>
@@ -94,14 +124,14 @@ const Verification = ({ navigation }) => {
               />
               <TextInput
                 // start={}
-                color={"#0000"}
+                color="Black"
                 secureTextEntry={true}
                 placeholder="OTP"
                 placeholderTextColor={"#7A869A"}
-                onChangeText={() => {
-                  setPassword(password);
+                onChangeText={(otp) => {
+                  setOtp(otp);
                 }}
-                value={password}
+                value={otp}
               />
             </View>
 

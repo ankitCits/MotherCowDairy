@@ -23,12 +23,32 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { forgetPassword } from "../Api/forgetPassword";
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
 const ForgetPassword = ({ navigation }) => {
-  const [name, setName] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isSelected, setSelection] = useState(false);
+  const submitLogin = async () => {
+    if(email != ''){
+      let payload = {
+        email:email,
+
+      }
+      let response = await forgetPassword(email,otp)
+      if(response){
+        console.log("Token Response",response.auth_token)
+        if(response.auth_token)
+        await onAuthentication(response.auth_token);
+      }else{
+        alert('Please check detail again')
+      }
+    }else{
+      alert('Please check detail again')
+    }
+
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -100,15 +120,15 @@ const ForgetPassword = ({ navigation }) => {
                 placeholder="Email id"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
-                  setName(name);
+                onChangeText={(email) => {
+                  setEmail(email);
                 }}
-                value={name}
+                value={email}
               />
             </View>
 
             <TouchableOpacity style={styles.pressable}
-            onPress={() => navigation.navigate("ForgetVerified")}
+            onPress={() => [navigation.navigate("ForgetVerified"),submitLogin()]}
             >
               <Text
                 style={{

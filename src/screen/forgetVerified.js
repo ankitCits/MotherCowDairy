@@ -23,20 +23,42 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { forgetPassword } from "../Api/forgetpassword";
+import { forgetVerify } from "../Api/forgetVerify";
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
 const ForgetVerified = ({ navigation }) => {
-  const [name, setName] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
+  const [otp, setOtp] = useState();
+  const [npassword, setNPassword] = useState();
+  const [rpassword, setRNPassword] = useState();
+
+  const submitLogin = async () => {
+    if (otp != "" && rpassword != "" && npassword != "") {
+      let payload = {
+        otp: otp,
+        new_password: npassword,
+        re_new_password: rpassword
+      };
+      let response = await forgetVerify(npassword, rpassword, otp);
+      if (response) {
+        console.log("Token Response", response.auth_token);
+        if (response.auth_token) await onAuthentication(response.auth_token);
+      } else {
+        alert("Please check detail again");
+      }
+    } else {
+      alert("Please check detail again");
+    }
+  };
+
   const [isSelected, setSelection] = useState(false);
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.img}>
-            <TouchableOpacity
-            onPress={()=>navigation.pop()}
-            >
+            <TouchableOpacity onPress={() => navigation.pop()}>
               <Image
                 source={arow}
                 style={{
@@ -59,7 +81,7 @@ const ForgetVerified = ({ navigation }) => {
                 marginTop: hp("3%"),
                 marginLeft: wp("10%"),
                 color: "#000",
-                fontWeight: "bold",
+                fontWeight: "bold"
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
               }}
@@ -72,7 +94,7 @@ const ForgetVerified = ({ navigation }) => {
                 marginTop: hp("2%"),
                 marginLeft: wp("10%"),
                 color: "#000",
-                fontWeight: "bold",
+                fontWeight: "bold"
                 // fontWeight: 'bold',
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
@@ -85,7 +107,7 @@ const ForgetVerified = ({ navigation }) => {
                 fontSize: 16,
 
                 marginLeft: wp("10%"),
-                color: "#000",
+                color: "#000"
                 // fontWeight: 'bold',
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
@@ -106,10 +128,10 @@ const ForgetVerified = ({ navigation }) => {
                 secureTextEntry={true}
                 placeholder="OTP"
                 placeholderTextColor={"#7A869A"}
-                onChangeText={() => {
-                  setPassword(password);
+                onChangeText={otp => {
+                  setOtp(otp);
                 }}
-                value={password}
+                value={otp}
               />
             </View>
 
@@ -126,10 +148,10 @@ const ForgetVerified = ({ navigation }) => {
                 secureTextEntry={true}
                 placeholder="Password"
                 placeholderTextColor={"#7A869A"}
-                onChangeText={() => {
-                  setPassword(password);
+                onChangeText={npassword => {
+                  setNPassword(npassword);
                 }}
-                value={password}
+                value={npassword}
               />
             </View>
 
@@ -146,14 +168,17 @@ const ForgetVerified = ({ navigation }) => {
                 secureTextEntry={true}
                 placeholder="Confirm Password"
                 placeholderTextColor={"#7A869A"}
-                onChangeText={() => {
-                  setPassword(password);
+                onChangeText={rpassword => {
+                  setRNPassword(rpassword);
                 }}
-                value={password}
+                value={rpassword}
               />
             </View>
 
-            <TouchableOpacity style={styles.pressable}>
+            <TouchableOpacity
+              style={styles.pressable}
+              onPress={() => submitLogin()}
+            >
               <Text
                 style={{
                   textAlign: "center",
@@ -240,7 +265,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0.7%"),
     color: "#000000",
     // backgroundColor: '#F4BD2F',
-    fontWeight: "bold",
+    fontWeight: "bold"
     // fontFamily: "Roboto"
   },
   label1: {
@@ -248,7 +273,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0.5%"),
     color: "#7A869A",
     // backgroundColor: '#F4BD2F',
-    fontSize: 16,
+    fontSize: 16
     // fontFamily: "Roboto"
   },
   boxes: {

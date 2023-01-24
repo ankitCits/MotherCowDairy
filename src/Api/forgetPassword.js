@@ -1,34 +1,35 @@
 import { BASE_URL } from "../Config";
 import { getAccessToken } from "../Storage";
 
-export const userLogin = (email, password) => {
-  console.log("PAYLOAD_IN_LOGIN", email);
+export const forgetPassword = (email,password) => {
+    console.log("PAYLOAD_IN_LOGIN",email)
   return new Promise(async (resolve, reject) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var formdata = new FormData();
     formdata.append("email", email);
-    formdata.append("password", password);
 
     var requestOptions = {
-      method: "POST",
+      method: 'POST',
       headers: myHeaders,
       body: formdata,
-      redirect: "follow"
+      redirect: 'follow'
     };
-    console.log("REquest_Option", requestOptions.body);
-    fetch(`${BASE_URL}user/login/`, requestOptions)
+
+    console.log("REquest_Option",requestOptions.body)
+
+    fetch(`${BASE_URL}user/forget-password/`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log("LOGIN_RESPONSE_IN_API", result);
+        console.log("FORGETPASSWORD_RESPONSE_IN_API", result);
 
         if (result) {
           resolve(result);
         }
       })
       .catch(error => {
-        console.log("LOGIN_ERROR_RESPONSE_IN_API", error);
+        console.log("FORGETPASSWORD_RESPONSE_IN_API", error);
         reject(error.message);
       });
     // resolve(
@@ -67,29 +68,7 @@ export const userLogin = (email, password) => {
 export const userDetails = () => {
   return new Promise(async (resolve, reject) => {
     const token = await getAccessToken();
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `token ${token}`);
-
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow"
-    };
-
-    fetch(`${BASE_URL}user/users/`, requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        if (result) {
-          resolve(result);
-        }
-      })
-      .catch(error => {
-        console.log("error", error);
-        reject(error.message);
-      });
-    // resolve("true");
+    resolve("true");
     // resolve(
     //   {
     //     "id": 3,

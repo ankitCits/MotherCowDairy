@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Pressable,
@@ -8,7 +8,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  ActivityIndicator
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -18,6 +19,23 @@ import arow from "../assets/icon/arow.png";
 
 const Profile = ({ navigation }) => {
   const [name, setName] = useState();
+  const [loader, setLoader] = useState(false)
+  const [user, setUser] = useState(null)
+
+
+  useEffect(()=>{
+
+    callUserDetailFun()
+  })
+
+  const callUserDetailFun = async() => {
+
+    setLoader(true)
+
+
+    // setLoader(false)
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
@@ -30,7 +48,7 @@ const Profile = ({ navigation }) => {
                   marginLeft: "25%",
                   marginTop: "5%",
                   height: 20,
-                  width: 20,
+                  width: 20
                 }}
               />
             </TouchableOpacity>
@@ -43,7 +61,7 @@ const Profile = ({ navigation }) => {
                 // fontFamily: "Poppins",
                 // fontWeight: "bold",
                 justifyContent: "center",
-                fontWeight:'500'
+                fontWeight: "500"
               }}
             >
               My Profile
@@ -51,145 +69,164 @@ const Profile = ({ navigation }) => {
           </View>
         </View>
 
-        <Image
-          source={require("../assets/img/Myprofile.png")}
-          style={{
-            // marginLeft: wp('5%'),
-            width: 100,
-            height: 100,
-            alignSelf: "center",
-            borderWidth: 1,
-            borderColor: "#EAE8F2",
-            borderRadius: 100/2,
-            marginTop: hp("2%")
-          }}
-        />
-        <Text
-          style={{
-            fontSize: 20,
-            marginTop: hp("1%"),
-            alignSelf: "center",
-            color: "#000",
-            fontWeight: "bold"
-            // fontFamily: "Roboto"
-          }}
-        >
-          David Miller
-        </Text>
-        <View style={styles.input}>
-          <Image
-            source={require("../assets/icon/user.png")}
-            style={styles.icons}
-          />
-          <TextInput
-            // style={styles.input}
-            color={"#0000"}
-            placeholder="Name"
-            placeholderTextColor={"#7A869A"}
-            // left={}
-            onChangeText={() => {
-              setName(name);
-            }}
-            value={name}
-          />
-        </View>
-        <View style={styles.input}>
-          <Image
-            source={require("../assets/icon/mark.png")}
-            style={styles.icons}
-          />
-          <TextInput
-            // style={styles.input}
-            color={"#0000"}
-            placeholder="Address"
-            placeholderTextColor={"#7A869A"}
-            // left={}
-            onChangeText={() => {
-              setName(name);
-            }}
-            value={name}
-          />
-        </View>
-        <View style={styles.input}>
-          <Image
-            source={require("../assets/icon/mail.png")}
-            style={styles.icons}
-          />
-          <TextInput
-            // style={styles.input}
-            color={"#0000"}
-            placeholder="Email Id"
-            placeholderTextColor={"#7A869A"}
-            // left={}
-            onChangeText={() => {
-              setName(name);
-            }}
-            value={name}
-          />
-        </View>
-        <View style={styles.input}>
-          <Image
-            source={require("../assets/icon/phone.png")}
-            style={styles.icons}
-          />
-          <TextInput
-            // style={styles.input}
-            color={"#0000"}
-            placeholder="Phone No."
-            placeholderTextColor={"#7A869A"}
-            // left={}
-            onChangeText={() => {
-              setName(name);
-            }}
-            value={name}
-          />
-        </View>
-        <View style={styles.input}>
-          <Image
-            source={require("../assets/icon/location.png")}
-            style={styles.icons}
-          />
-          <TextInput
-            // style={styles.input}
-            color={"#0000"}
-            placeholder="Address line 1"
-            placeholderTextColor={"#7A869A"}
-            // left={}
-            onChangeText={() => {
-              setName(name);
-            }}
-            value={name}
-          />
-        </View>
-        <View style={styles.input}>
-          <Image
-            source={require("../assets/icon/location.png")}
-            style={styles.icons}
-          />
-          <TextInput
-            // style={styles.input}
-            color={"#0000"}
-            placeholder="Address line 2"
-            placeholderTextColor={"#7A869A"}
-            // left={}
-            onChangeText={() => {
-              setName(name);
-            }}
-            value={name}
-          />
-        </View>
-        <Pressable style={styles.pressable}>
-          <Text
-            style={{
-              textAlign: "center",
-              justifyContent: "center",
-              alignItems: "center",
-              alignContent: "center"
-            }}
-          >
-            Done
-          </Text>
-        </Pressable>
+        {loader  ?
+      <View
+      style={{
+        flex:1,
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+        alignSelf:'center',
+        marginTop:'50%'
+      }}
+    >
+      <ActivityIndicator size="large" color={"#F4BD2F"} />
+    </View> 
+    :
+     
+    <>
+    <Image
+      source={require("../assets/img/Myprofile.png")}
+      style={{
+        // marginLeft: wp('5%'),
+        width: 100,
+        height: 100,
+        alignSelf: "center",
+        borderWidth: 1,
+        borderColor: "#EAE8F2",
+        borderRadius: 100 / 2,
+        marginTop: hp("2%")
+      }}
+    />
+    <Text
+      style={{
+        fontSize: 20,
+        marginTop: hp("1%"),
+        alignSelf: "center",
+        color: "#000",
+        fontWeight: "bold"
+        // fontFamily: "Roboto"
+      }}
+    >
+      David Miller
+    </Text>
+    <View style={styles.input}>
+      <Image
+        source={require("../assets/icon/user.png")}
+        style={styles.icons}
+      />
+      <TextInput
+        // style={styles.input}
+        color={"#0000"}
+        placeholder="Name"
+        placeholderTextColor={"#7A869A"}
+        // left={}
+        onChangeText={() => {
+          setName(name);
+        }}
+        value={name}
+      />
+    </View>
+    <View style={styles.input}>
+      <Image
+        source={require("../assets/icon/mark.png")}
+        style={styles.icons}
+      />
+      <TextInput
+        // style={styles.input}
+        color={"#0000"}
+        placeholder="Address"
+        placeholderTextColor={"#7A869A"}
+        // left={}
+        onChangeText={() => {
+          setName(name);
+        }}
+        value={name}
+      />
+    </View>
+    <View style={styles.input}>
+      <Image
+        source={require("../assets/icon/mail.png")}
+        style={styles.icons}
+      />
+      <TextInput
+        // style={styles.input}
+        color={"#0000"}
+        placeholder="Email Id"
+        placeholderTextColor={"#7A869A"}
+        // left={}
+        onChangeText={() => {
+          setName(name);
+        }}
+        value={name}
+      />
+    </View>
+    <View style={styles.input}>
+      <Image
+        source={require("../assets/icon/phone.png")}
+        style={styles.icons}
+      />
+      <TextInput
+        // style={styles.input}
+        color={"#0000"}
+        placeholder="Phone No."
+        placeholderTextColor={"#7A869A"}
+        // left={}
+        onChangeText={() => {
+          setName(name);
+        }}
+        value={name}
+      />
+    </View>
+    <View style={styles.input}>
+      <Image
+        source={require("../assets/icon/location.png")}
+        style={styles.icons}
+      />
+      <TextInput
+        // style={styles.input}
+        color={"#0000"}
+        placeholder="Address line 1"
+        placeholderTextColor={"#7A869A"}
+        // left={}
+        onChangeText={() => {
+          setName(name);
+        }}
+        value={name}
+      />
+    </View>
+    <View style={styles.input}>
+      <Image
+        source={require("../assets/icon/location.png")}
+        style={styles.icons}
+      />
+      <TextInput
+        // style={styles.input}
+        color={"#0000"}
+        placeholder="Address line 2"
+        placeholderTextColor={"#7A869A"}
+        // left={}
+        onChangeText={() => {
+          setName(name);
+        }}
+        value={name}
+      />
+    </View>
+    <Pressable style={styles.pressable}>
+      <Text
+        style={{
+          textAlign: "center",
+          justifyContent: "center",
+          alignItems: "center",
+          alignContent: "center"
+        }}
+      >
+        Done
+      </Text>
+    </Pressable>
+    </>
+      }
+
       </ScrollView>
     </SafeAreaView>
   );
