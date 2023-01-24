@@ -34,16 +34,29 @@ const ForgetVerified = ({ navigation }) => {
   const [rpassword, setRNPassword] = useState();
 
   const submitLogin = async () => {
-    if (otp != "" && rpassword != "" && npassword != "") {
-      let payload = {
-        otp: otp,
-        new_password: npassword,
-        re_new_password: rpassword
-      };
+    if (otp == undefined) {
+      return alert("Fill OTP.");
+    }
+
+    if (npassword == undefined) {
+      return alert("Fill New Password.");
+    }
+
+    if (rpassword == undefined) {
+      return alert("Fill Confirm New Password.");
+    }
+
+    if (rpassword != npassword) {
+      return alert("Password & Confirm Password Not Match.");
+    }
+    if (otp != undefined && rpassword != undefined && npassword != undefined) {
       let response = await forgetVerify(npassword, rpassword, otp);
       if (response) {
         console.log("Token Response", response.auth_token);
-        if (response.auth_token) await onAuthentication(response.auth_token);
+        if (response) {
+          navigation.navigate("Login")
+          // await onAuthentication(response.auth_token)
+        }
       } else {
         alert("Please check detail again");
       }

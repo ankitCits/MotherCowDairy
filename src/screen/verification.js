@@ -9,7 +9,8 @@ import {
   Pressable,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 import PasswordL from "react-native-vector-icons/SimpleLineIcons";
@@ -25,14 +26,14 @@ import {
 } from "react-native-responsive-screen";
 import AuthContext from "../Context/AuthContext";
 import { emailVerify } from "../Api/emailVerify";
+import { getEmail } from "../Storage";
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
-const Verification = ({ navigation,props }) => {
+const Verification = ({ navigation, props }) => {
   const [otp, setOtp] = useState();
-  const [email, setEmail] = useState();
   const [isSelected, setSelection] = useState(false);
   const { onAuthentication } = useContext(AuthContext);
-
+  const [loader, setLoader] = useState(false);
 
   // const submitLogin = async () => {
   //   await onAuthentication('true');
@@ -40,39 +41,39 @@ const Verification = ({ navigation,props }) => {
 
   //call verfit api auto with props email
 
-
-
-
-
   //Submit OTP When User Entered.
   const submitLogin = async () => {
-    if(otp != '' && email != ''){
+    let email = await getEmail();
+    console.log("EMAIL>>>", email);
+    if (otp != undefined) {
+      setLoader(true)
       let payload = {
         //check email from props
-        email:email,
-        otp :otp,
+        email: email,
+        otp: otp
+      };
+      let response = await emailVerify(email, otp);
+      if (response) {
+        console.log("Token Response", response.auth_token);
+        if (response.auth_token) {
+          await onAuthentication(response.auth_token)
+        }else{
+          alert(response.message)
+        }
+      } else {
+        alert("Please check OTP again");
       }
-      let response = await emailVerify(email,otp)
-      if(response){
-        console.log("Token Response",response.auth_token)
-        if(response.auth_token)
-        await onAuthentication(response.auth_token);
-      }else{
-        alert('Please check detail again')
-      }
-    }else{
-      alert('Please check detail again')
+    } else {
+      alert("Please Fill OTP Again.");
     }
-
+    setLoader(false)
   };
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.img}>
-            <TouchableOpacity
-            onPress={()=>navigation.pop()}
-            >
+            <TouchableOpacity onPress={() => navigation.pop()}>
               <Image
                 source={arow}
                 style={{
@@ -95,7 +96,7 @@ const Verification = ({ navigation,props }) => {
                 marginTop: hp("3%"),
                 marginLeft: wp("10%"),
                 color: "#000",
-                fontWeight: "bold",
+                fontWeight: "bold"
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
               }}
@@ -107,7 +108,7 @@ const Verification = ({ navigation,props }) => {
                 fontSize: 16,
                 marginTop: hp("2%"),
                 marginLeft: wp("10%"),
-                color: "#000",
+                color: "#000"
                 // fontWeight: 'bold',
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
@@ -128,26 +129,38 @@ const Verification = ({ navigation,props }) => {
                 secureTextEntry={true}
                 placeholder="OTP"
                 placeholderTextColor={"#7A869A"}
-                onChangeText={(otp) => {
+                onChangeText={otp => {
                   setOtp(otp);
                 }}
                 value={otp}
               />
             </View>
 
-            <TouchableOpacity style={styles.pressable}
-            onPress={() => submitLogin()}
+            <TouchableOpacity
+              style={styles.pressable}
+              onPress={() => submitLogin()}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  alignContent: "center"
-                }}
-              >
-                Submit
-              </Text>
+              {loader
+                ? <View
+                    style={{
+                      textAlign: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    <ActivityIndicator size="small" color={"#fff"} />
+                  </View>
+                : <Text
+                    style={{
+                      textAlign: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    Submit
+                  </Text>}
             </TouchableOpacity>
           </View>
           <View style={styles.footer}>
@@ -224,7 +237,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0.7%"),
     color: "#000000",
     // backgroundColor: '#F4BD2F',
-    fontWeight: "bold",
+    fontWeight: "bold"
     // fontFamily: "Roboto"
   },
   label1: {
@@ -232,7 +245,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0.5%"),
     color: "#7A869A",
     // backgroundColor: '#F4BD2F',
-    fontSize: 16,
+    fontSize: 16
     // fontFamily: "Roboto"
   },
   boxes: {

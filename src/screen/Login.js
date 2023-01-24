@@ -26,25 +26,31 @@ import { userLogin } from "../Api/auth";
 const Login = ({ navigation,props }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
+  const [remember, setRemember] = useState(false);
   const [isSelected, setSelection] = useState(false);
   const { onAuthentication } = useContext(AuthContext);
 
   const submitLogin = async () => {
-    if(name != '' && password != ''){
-      let payload = {
-        email:name,
-        password:password
-      }
+    if (name == undefined) {
+      return alert("Fill Email.");
+    }
+
+    if (password == undefined) {
+      return alert("Fill Password.");
+    }
+    if(name != undefined && password != undefined){
       let response = await userLogin(name,password)
       if(response){
-        console.log("Token Response",response.auth_token)
+        console.log("Token Response",response)
         if(response.auth_token)
-        await onAuthentication(response.auth_token);
+       { await onAuthentication(response.auth_token);}else{
+        alert(response.message)
+       }
       }else{
-        alert('Please check detail again')
+        alert('Please Check Detail again.')
       }
     }else{
-      alert('Please check detail again')
+      alert('Please Check detail again.')
     }
 
   };
@@ -111,7 +117,22 @@ const Login = ({ navigation,props }) => {
               onValueChange={setSelection}
               style={styles.checkbox}
             /> */}
-              <Icon name="check-box" size={24} color="#F4BD2F" />
+            {remember ?
+            <TouchableOpacity
+            style={{marginTop:2}}
+            onPress={()=>setRemember(false)}
+            >
+              <Icon name="check-box" size={23} color="#F4BD2F" />
+            </TouchableOpacity>
+            :
+            <TouchableOpacity
+            style={{marginTop:2}}
+            onPress={()=>setRemember(true)}
+            >
+              <Icon name="check-box-outline-blank" size={23} color="#F4BD2F" />
+            </TouchableOpacity>
+          }
+              
               <Text style={styles.label}>Remember Me</Text>
             </View>
 
@@ -123,7 +144,7 @@ const Login = ({ navigation,props }) => {
           </View>
           <TouchableOpacity
             style={styles.pressable}
-            onPress={() => [navigation.navigate("Home"),submitLogin()]}
+            onPress={() => submitLogin()}
           >
             <Text
               style={{

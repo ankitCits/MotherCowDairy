@@ -30,33 +30,31 @@ const ForgetPassword = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isSelected, setSelection] = useState(false);
+
   const submitLogin = async () => {
-    if(email != ''){
-      let payload = {
-        email:email,
-
+    if (email != undefined) {
+      let response = await forgetPassword(email);
+      if (response) {
+        console.log("Token Response", response);
+        if (response.message == "otp sent valied upto 10 min") {
+          // await onAuthentication(response.auth_token);
+          navigation.navigate("ForgetVerified");
+        } else {
+          alert(response.message);
+        }
+      } else {
+        alert("Please Fill Valid Email.");
       }
-      let response = await forgetPassword(email,otp)
-      if(response){
-        console.log("Token Response",response.auth_token)
-        if(response.auth_token)
-        await onAuthentication(response.auth_token);
-      }else{
-        alert('Please check detail again')
-      }
-    }else{
-      alert('Please check detail again')
+    } else {
+      alert("Please Fill Valid Email.");
     }
-
   };
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.img}>
-            <TouchableOpacity
-            onPress={()=>navigation.pop()}
-            >
+            <TouchableOpacity onPress={() => navigation.pop()}>
               <Image
                 source={arow}
                 style={{
@@ -78,8 +76,8 @@ const ForgetPassword = ({ navigation }) => {
                 fontSize: 34,
                 marginTop: hp("3%"),
                 marginLeft: wp("10%"),
-                color: "#000",
-                fontWeight: "bold",
+                color: "black",
+                fontWeight: "bold"
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
               }}
@@ -91,7 +89,7 @@ const ForgetPassword = ({ navigation }) => {
                 fontSize: 16,
                 marginTop: hp("2%"),
                 marginLeft: wp("10%"),
-                color: "#000",
+                color: "black"
                 // fontWeight: 'bold',
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
@@ -104,7 +102,7 @@ const ForgetPassword = ({ navigation }) => {
                 fontSize: 16,
 
                 marginLeft: wp("10%"),
-                color: "#000",
+                color: "#000"
                 // fontWeight: 'bold',
                 // fontFamily: "Roboto"
                 // marginBottom:hp("4%")
@@ -116,19 +114,20 @@ const ForgetPassword = ({ navigation }) => {
               <Image source={mail} style={styles.icons} />
               <TextInput
                 // style={styles.input}
-                color={"#0000"}
+                color={"#000"}
                 placeholder="Email id"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={(email) => {
+                onChangeText={email => {
                   setEmail(email);
                 }}
                 value={email}
               />
             </View>
 
-            <TouchableOpacity style={styles.pressable}
-            onPress={() => [navigation.navigate("ForgetVerified"),submitLogin()]}
+            <TouchableOpacity
+              style={styles.pressable}
+              onPress={() => submitLogin()}
             >
               <Text
                 style={{
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0.7%"),
     color: "#000000",
     // backgroundColor: '#F4BD2F',
-    fontWeight: "bold",
+    fontWeight: "bold"
     // fontFamily: "Roboto"
   },
   label1: {
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     marginTop: hp("0.5%"),
     color: "#7A869A",
     // backgroundColor: '#F4BD2F',
-    fontSize: 16,
+    fontSize: 16
     // fontFamily: "Roboto"
   },
   boxes: {

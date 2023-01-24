@@ -17,3 +17,24 @@ export const removeAccessToken = async () => {
         resolve(removeStorage('ACCESS_TOKEN'))
     }))
 }
+
+
+
+// Set Email
+export const setEmailS = async value => {
+    return (promise = new Promise(function (resolve) {
+        resolve(writeStorage('EMAIL_', value))
+    }))
+}
+
+export const getEmail = async () => {
+    return (promise = new Promise(function (resolve) {
+        resolve(readStorage('EMAIL_'))
+    }))
+}
+
+export const removeEmail = async () => {
+    return (promise = new Promise(function (resolve) {
+        resolve(removeStorage('EMAIL_'))
+    }))
+}

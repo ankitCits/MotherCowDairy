@@ -32,6 +32,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { userCreate } from "../Api/userCreate";
+import { setEmailS } from "../Storage";
 const data = [
   { label: "NSW|New South Wales", value: "1" },
   { label: "QLD|Queensland", value: "2" },
@@ -44,9 +45,10 @@ const data = [
 ];
 
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
-const SignUp = ({ navigation,props }) => {
+const SignUp = ({ navigation, props }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
+  const [passwordC, setPasswordC] = useState();
   const [address, setAddress] = useState();
   const [addressp, setAddressp] = useState();
   const [addressa, setAddressa] = useState();
@@ -62,22 +64,75 @@ const SignUp = ({ navigation,props }) => {
   const [loader, setLoader] = useState(false);
 
   const submitLogin = async () => {
-    navigation.navigate("Verification");
+    console.log(">>>>",name)
+    if (name == undefined) {
+      return alert("Fill Business Name.");
+    }
+    if (address == undefined) {
+      return alert("Fill Business address.");
+    }
+
+    if (cname == undefined) {
+      return alert("Fill Business Contact Name.");
+    }
+
+    if (email == undefined) {
+      return alert("Fill email.");
+    }
+
+    if (phoneno == undefined) {
+      return alert("Fill Phone No.");
+    }
+
+    if (password == undefined) {
+      return alert("Fill password.");
+    }
+
+    if (passwordC == undefined) {
+      return alert("Fill Confirm password.");
+    }
+
+    if (passwordC != undefined && passwordC != password) {
+      return alert("Check Password & Conirm Password.");
+    }
+
+    if (addressp == undefined) {
+      return alert("Fill Nearby In Address Line 1.");
+    }
+
+    if (addressa == undefined) {
+      return alert("Fill House No In Address Line 1.");
+    }
+
+    if (country == undefined) {
+      return alert("Fill Country.");
+    }
+
+    if (city == undefined) {
+      return alert("Fill City.");
+    }
+    if (state == undefined) {
+      return alert("Fill State.");
+    }
+
+    if (zipcode == undefined) {
+      return alert("Fill Zipcode.");
+    }
     if (
-      name != "" ||
-      password != "" ||
-      address != "" ||
-      addressa != "" ||
-      addressp != "" ||
-      cname != "" ||
-      phoneno != "" ||
-      country != "" ||
-      city !== "" ||
-      state != "" ||
-      zipcode != "" ||
-      email != ""
+      name != undefined ||
+      password != undefined ||
+      address != undefined ||
+      addressa != undefined ||
+      addressp != undefined ||
+      cname != undefined ||
+      phoneno != undefined ||
+      country != undefined ||
+      city !== undefined ||
+      state != undefined ||
+      zipcode != undefined ||
+      email != undefined
     ) {
-      setLoader(true)
+      setLoader(true);
       let payload = {
         email: email,
         password: password,
@@ -109,19 +164,20 @@ const SignUp = ({ navigation,props }) => {
       if (response) {
         console.log("Token Response", response);
         if (response.email_verified == false) {
-          setLoader(false)
+          await setEmailS(email);
+          setLoader(false);
           navigation.navigate("Verification", response);
         }
         // await onAuthentication(response.auth_token);
       } else {
-        setLoader(false)
-        alert("Please check detail again");
+        setLoader(false);
+        alert("Please Check detail again.");
       }
     } else {
-      setLoader(false)
-      alert("Please check detail again");
+      setLoader(false);
+      alert("Please Check detail again.");
     }
-    setLoader(false)
+    setLoader(false);
   };
 
   return (
@@ -153,7 +209,7 @@ const SignUp = ({ navigation,props }) => {
                 placeholder="Business Name"
                 placeholderTextColor={"#7A869A"}
                 // left={}
-                onChangeText={() => {
+                onChangeText={(name) => {
                   setName(name);
                 }}
                 value={name}
@@ -228,12 +284,33 @@ const SignUp = ({ navigation,props }) => {
                 secureTextEntry={true}
                 placeholder="Password"
                 placeholderTextColor={"#7A869A"}
-                onChangeText={() => {
+                onChangeText={password => {
                   setPassword(password);
                 }}
                 value={password}
               />
             </View>
+
+            <View style={styles.input}>
+              <PasswordL
+                name="lock"
+                size={20}
+                color="#7A869A"
+                style={styles.icons1}
+              />
+              <TextInput
+                // start={}
+                color={Platform.OS == "android" ? "#000" : "black"}
+                secureTextEntry={true}
+                placeholder="Confirm Password"
+                placeholderTextColor={"#7A869A"}
+                onChangeText={password => {
+                  setPasswordC(password);
+                }}
+                value={passwordC}
+              />
+            </View>
+
             <View style={styles.input}>
               <Image source={location} style={styles.icons} />
               <TextInput

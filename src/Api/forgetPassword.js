@@ -1,8 +1,8 @@
 import { BASE_URL } from "../Config";
 import { getAccessToken } from "../Storage";
 
-export const forgetPassword = (email,password) => {
-    console.log("PAYLOAD_IN_LOGIN",email)
+export const forgetPassword = (email) => {
+  console.log("PAYLOAD_IN_LOGIN", email);
   return new Promise(async (resolve, reject) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -11,13 +11,13 @@ export const forgetPassword = (email,password) => {
     formdata.append("email", email);
 
     var requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: formdata,
-      redirect: 'follow'
+      redirect: "follow"
     };
 
-    console.log("REquest_Option",requestOptions.body)
+    console.log("REquest_Option", requestOptions.body);
 
     fetch(`${BASE_URL}user/forget-password/`, requestOptions)
       .then(response => response.json())
@@ -32,36 +32,6 @@ export const forgetPassword = (email,password) => {
         console.log("FORGETPASSWORD_RESPONSE_IN_API", error);
         reject(error.message);
       });
-    // resolve(
-    //   {
-    //     "id": 3,
-    //     "password_hash": "$2a$14$evsx579ihmwExQjg0DRkVe.NcAyZiEXl8lFnT/jB.f14Hd9GaTtCi",
-    //     "user_id": "3b273a74-973a-47f7-adc3-48918748ad85",
-    //     "username": "ankitp"
-    //   }
-    // );
-    // return;
-
-    //   var myHeaders = new Headers();
-    //   myHeaders.append('x-access-tokens', token);
-    //   fetch(`${BASE_URL}auth_user`, {
-    //     method: 'GET',
-    //     headers: myHeaders,
-    //   })
-    //     .then(result => result.json())
-    //     .then(response => {
-    //       console.log('USER_DEATIL > response', response);
-    //       if (response) {
-    //         resolve(response[0]);
-    //       }
-    //       if (response.errors) {
-    //         reject(response.errors.errors);
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //       reject(error.message);
-    //     });
   });
 };
 
@@ -69,35 +39,5 @@ export const userDetails = () => {
   return new Promise(async (resolve, reject) => {
     const token = await getAccessToken();
     resolve("true");
-    // resolve(
-    //   {
-    //     "id": 3,
-    //     "password_hash": "$2a$14$evsx579ihmwExQjg0DRkVe.NcAyZiEXl8lFnT/jB.f14Hd9GaTtCi",
-    //     "user_id": "3b273a74-973a-47f7-adc3-48918748ad85",
-    //     "username": "ankitp"
-    //   }
-    // );
-    // return;
-
-    //   var myHeaders = new Headers();
-    //   myHeaders.append('x-access-tokens', token);
-    //   fetch(`${BASE_URL}auth_user`, {
-    //     method: 'GET',
-    //     headers: myHeaders,
-    //   })
-    //     .then(result => result.json())
-    //     .then(response => {
-    //       console.log('USER_DEATIL > response', response);
-    //       if (response) {
-    //         resolve(response[0]);
-    //       }
-    //       if (response.errors) {
-    //         reject(response.errors.errors);
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //       reject(error.message);
-    //     });
   });
 };
