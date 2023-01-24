@@ -38,3 +38,24 @@ export const removeEmail = async () => {
         resolve(removeStorage('EMAIL_'))
     }))
 }
+
+
+
+// Set Message
+export const setMsg = async value => {
+    return (promise = new Promise(function (resolve) {
+        resolve(writeStorage('MAS__', value))
+    }))
+}
+
+export const getMsg = async () => {
+    return (promise = new Promise(function (resolve) {
+        resolve(readStorage('MAS__'))
+    }))
+}
+
+export const removeMsg = async () => {
+    return (promise = new Promise(function (resolve) {
+        resolve(removeStorage('MAS__'))
+    }))
+}

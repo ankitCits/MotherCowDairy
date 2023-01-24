@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ImageBackground,
@@ -9,15 +9,28 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import arow from "../assets/icon/arow.png";
+import { getMsg } from "../Storage";
 
-const OrderSuccessfull = ({ navigation }) => {
+const OrderSuccessfull = ({ navigation }, props) => {
+  const [hMsg, setHMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    fetchDetail();
+  }, []);
+
+  const fetchDetail = async () => {
+    let msg = await getMsg()
+    setHMsg(msg)
+  }
+  console.log("PROPS>>", props)
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.header}>
@@ -35,60 +48,79 @@ const OrderSuccessfull = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Image
-        source={require("../assets/img/ordersuccessfull.png")}
-        style={{
-          alignSelf: "center",
-          width: wp("60%"),
-          height: hp("25%"),
-          marginTop: hp("10%")
-        }}
-      />
-      <Text
-        style={{
-          fontSize: 30,
-          color: "#000",
-          fontWeight: "bold",
-          textAlign: "center",
-          marginTop: hp("5%")
-        }}
-      >
-        Order Successful
-      </Text>
-      <Text
-        style={{
-          fontSize: 24,
-          color: "#000",
-          fontWeight: "bold",
-          textAlign: "center",
-          marginTop: hp("4%")
-        }}
-      >
-        Thank you!
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          color: "#7A869A",
-          fontWeight: "bold",
-          textAlign: "center",
-          marginTop: hp("1%")
-        }}
-      >
-        Yay, It's a nice order! {"\n"}It will arrive soon.
-      </Text>
-      <TouchableOpacity style={styles.pressable}>
-        <Text
+      {loading ?
+        <View
           style={{
-            textAlign: "center",
+            alignSelf: "center",
             justifyContent: "center",
-            alignItems: "center",
-            alignContent: "center"
+            // left: "50%",
+            // height: hp("30%")
           }}
         >
-          Done
-        </Text>
-      </TouchableOpacity>
+          <ActivityIndicator size="small" color={"#F4BD2F"} />
+        </View>
+
+        :
+        <>
+          <Image
+            source={require("../assets/img/ordersuccessfull.png")}
+            style={{
+              alignSelf: "center",
+              width: wp("60%"),
+              height: hp("25%"),
+              marginTop: hp("10%")
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 30,
+              color: "#000",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: hp("5%")
+            }}
+          >
+            Order Successful
+          </Text>
+          <Text
+            style={{
+              fontSize: 24,
+              color: "#000",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: hp("4%")
+            }}
+          >
+            Thank you!
+          </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#7A869A",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: hp("1%")
+            }}
+          >
+            Yay, It's a nice order! {"\n"}It will arrive soon.
+          </Text>
+          <TouchableOpacity style={styles.pressable}
+          onPress={()=>navigation.pop()}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
+                alignContent: "center"
+              }}
+            >
+              Done
+            </Text>
+          </TouchableOpacity>
+        </>
+      }
+
     </SafeAreaView>
   );
 };

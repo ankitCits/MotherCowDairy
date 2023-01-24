@@ -10,7 +10,8 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import PasswordL from "react-native-vector-icons/SimpleLineIcons";
 import login from "../assets/img/header.png";
@@ -23,12 +24,13 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AuthContext from "../Context/AuthContext";
 import { userLogin } from "../Api/auth";
-const Login = ({ navigation,props }) => {
+const Login = ({ navigation, props }) => {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [remember, setRemember] = useState(false);
   const [isSelected, setSelection] = useState(false);
   const { onAuthentication } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false);
 
   const submitLogin = async () => {
     if (name == undefined) {
@@ -38,21 +40,27 @@ const Login = ({ navigation,props }) => {
     if (password == undefined) {
       return alert("Fill Password.");
     }
-    if(name != undefined && password != undefined){
-      let response = await userLogin(name,password)
-      if(response){
-        console.log("Token Response",response)
-        if(response.auth_token)
-       { await onAuthentication(response.auth_token);}else{
-        alert(response.message)
-       }
-      }else{
-        alert('Please Check Detail again.')
+    if (name != undefined && password != undefined) {
+      setLoader(true);
+      let response = await userLogin(name, password);
+      if (response) {
+        console.log("Token Response", response);
+        if (response.auth_token) {
+          setLoader(false);
+          await onAuthentication(response.auth_token);
+        } else {
+          alert(response.message);
+          setLoader(false);
+        }
+      } else {
+        alert("Please Check Detail again.");
+        setLoader(false);
       }
-    }else{
-      alert('Please Check detail again.')
+    } else {
+      alert("Please Check detail again.");
+      setLoader(false);
     }
-
+    setLoader(false);
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -82,8 +90,8 @@ const Login = ({ navigation,props }) => {
               // color={"#0000"}
               placeholder="Email id"
               placeholderTextColor={"#7A869A"}
-              autoCapitalize='none'
-              onChangeText={(name) => {
+              autoCapitalize="none"
+              onChangeText={name => {
                 setName(name);
               }}
               value={name}
@@ -99,11 +107,11 @@ const Login = ({ navigation,props }) => {
             <TextInput
               // start={}
               // color={"#0000"}
-              autoCapitalize='none'
+              autoCapitalize="none"
               secureTextEntry={true}
               placeholder="Password"
               placeholderTextColor={"#7A869A"}
-              onChangeText={(password) => {
+              onChangeText={password => {
                 setPassword(password);
               }}
               value={password}
@@ -117,22 +125,24 @@ const Login = ({ navigation,props }) => {
               onValueChange={setSelection}
               style={styles.checkbox}
             /> */}
-            {remember ?
-            <TouchableOpacity
-            style={{marginTop:2}}
-            onPress={()=>setRemember(false)}
-            >
-              <Icon name="check-box" size={23} color="#F4BD2F" />
-            </TouchableOpacity>
-            :
-            <TouchableOpacity
-            style={{marginTop:2}}
-            onPress={()=>setRemember(true)}
-            >
-              <Icon name="check-box-outline-blank" size={23} color="#F4BD2F" />
-            </TouchableOpacity>
-          }
-              
+              {remember
+                ? <TouchableOpacity
+                    style={{ marginTop: 2 }}
+                    onPress={() => setRemember(false)}
+                  >
+                    <Icon name="check-box" size={23} color="#F4BD2F" />
+                  </TouchableOpacity>
+                : <TouchableOpacity
+                    style={{ marginTop: 2 }}
+                    onPress={() => setRemember(true)}
+                  >
+                    <Icon
+                      name="check-box-outline-blank"
+                      size={23}
+                      color="#F4BD2F"
+                    />
+                  </TouchableOpacity>}
+
               <Text style={styles.label}>Remember Me</Text>
             </View>
 
@@ -146,16 +156,27 @@ const Login = ({ navigation,props }) => {
             style={styles.pressable}
             onPress={() => submitLogin()}
           >
-            <Text
-              style={{
-                textAlign: "center",
-                justifyContent: "center",
-                alignItems: "center",
-                alignContent: "center"
-              }}
-            >
-              Login
-            </Text>
+            {loader
+              ? <View
+                  style={{
+                    textAlign: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    alignContent: "center"
+                  }}
+                >
+                  <ActivityIndicator size="small" color={"#fff"} />
+                </View>
+              : <Text
+                  style={{
+                    textAlign: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    alignContent: "center"
+                  }}
+                >
+                  Login
+                </Text>}
           </TouchableOpacity>
           <View style={styles.sign}>
             <Text style={styles.label1}>Don't have an account?</Text>
