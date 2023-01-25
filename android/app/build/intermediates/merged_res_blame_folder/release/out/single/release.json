@@ -1,0 +1,202 @@
+[
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-xxhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-xxhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_mail.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_mail.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-xxxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_milk.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_milk.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_wave2.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_wave2.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_file.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_file.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_ordersuccessfull.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_ordersuccessfull.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_fresh.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_fresh.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/xml_network_security_config.xml.flat",
+        "source": "com.mothercow.app-main-30:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.mothercow.app-main-30:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_profile.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_profile.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_user.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_user.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_start.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_start.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_location.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_location.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_loginimg.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_loginimg.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_header.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_header.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_item.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_item.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_myprofile.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_myprofile.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_bike.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_bike.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_node_modules_reactnativeelementdropdown_src_assets_down.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/node_modules_reactnativeelementdropdown_src_assets_down.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_check.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_check.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_mark.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_mark.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_locked.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_locked.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_node_modules_reactnativeelementdropdown_src_assets_close.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/node_modules_reactnativeelementdropdown_src_assets_close.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_arow.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_arow.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_milkk.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_milkk.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_phone.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_phone.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-hdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-hdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.mothercow.app-main-30:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_icon_store.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_icon_store.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_background.jpeg.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_background.jpeg"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_mothercow.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_mothercow.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-xxxhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-xxxhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-xhdpi_node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-xhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_src_assets_img_bell.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/src_assets_img_bell.png"
+    },
+    {
+        "merged": "com.mothercow.app-merged_res-29:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
+        "source": "com.mothercow.app-react-24:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
+    }
+]
