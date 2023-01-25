@@ -15,25 +15,39 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { userDetails } from "../Api/auth";
 import arow from "../assets/icon/arow.png";
-
+import user from "../assets/icon/user.png";
 const Profile = ({ navigation }) => {
-  const [name, setName] = useState();
   const [loader, setLoader] = useState(false)
   const [user, setUser] = useState(null)
+  const [userData, setUserData] = useState();
+  const [name, setName] = useState();
+  const [address, setAddress] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [ad1, setAd1] = useState();
+  const [ad2, setAd2] = useState();
 
 
-  useEffect(()=>{
-
-    callUserDetailFun()
+  useEffect(() => {
+    fetchUserDetail()
   })
 
-  const callUserDetailFun = async() => {
-
+  const fetchUserDetail = async () => {
     setLoader(true)
+    let user = await userDetails();
+    if (user) {
+      console.log("USER_IN_HOME", user);
+      setUserData(user);
+      setLoader(false)
+    }
+    setLoader(false)
+  };
 
 
-    // setLoader(false)
+  const updateProfile = () => {
+    setLoader(false)
   }
 
   return (
@@ -69,163 +83,176 @@ const Profile = ({ navigation }) => {
           </View>
         </View>
 
-        {loader  ?
-      <View
-      style={{
-        flex:1,
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center",
-        alignSelf:'center',
-        marginTop:'50%'
-      }}
-    >
-      <ActivityIndicator size="large" color={"#F4BD2F"} />
-    </View> 
-    :
-     
-    <>
-    <Image
-      source={require("../assets/img/Myprofile.png")}
-      style={{
-        // marginLeft: wp('5%'),
-        width: 100,
-        height: 100,
-        alignSelf: "center",
-        borderWidth: 1,
-        borderColor: "#EAE8F2",
-        borderRadius: 100 / 2,
-        marginTop: hp("2%")
-      }}
-    />
-    <Text
-      style={{
-        fontSize: 20,
-        marginTop: hp("1%"),
-        alignSelf: "center",
-        color: "#000",
-        fontWeight: "bold"
-        // fontFamily: "Roboto"
-      }}
-    >
-      David Miller
-    </Text>
-    <View style={styles.input}>
-      <Image
-        source={require("../assets/icon/user.png")}
-        style={styles.icons}
-      />
-      <TextInput
-        // style={styles.input}
-        color={"#0000"}
-        placeholder="Name"
-        placeholderTextColor={"#7A869A"}
-        // left={}
-        onChangeText={() => {
-          setName(name);
-        }}
-        value={name}
-      />
-    </View>
-    <View style={styles.input}>
-      <Image
-        source={require("../assets/icon/mark.png")}
-        style={styles.icons}
-      />
-      <TextInput
-        // style={styles.input}
-        color={"#0000"}
-        placeholder="Address"
-        placeholderTextColor={"#7A869A"}
-        // left={}
-        onChangeText={() => {
-          setName(name);
-        }}
-        value={name}
-      />
-    </View>
-    <View style={styles.input}>
-      <Image
-        source={require("../assets/icon/mail.png")}
-        style={styles.icons}
-      />
-      <TextInput
-        // style={styles.input}
-        color={"#0000"}
-        placeholder="Email Id"
-        placeholderTextColor={"#7A869A"}
-        // left={}
-        onChangeText={() => {
-          setName(name);
-        }}
-        value={name}
-      />
-    </View>
-    <View style={styles.input}>
-      <Image
-        source={require("../assets/icon/phone.png")}
-        style={styles.icons}
-      />
-      <TextInput
-        // style={styles.input}
-        color={"#0000"}
-        placeholder="Phone No."
-        placeholderTextColor={"#7A869A"}
-        // left={}
-        onChangeText={() => {
-          setName(name);
-        }}
-        value={name}
-      />
-    </View>
-    <View style={styles.input}>
-      <Image
-        source={require("../assets/icon/location.png")}
-        style={styles.icons}
-      />
-      <TextInput
-        // style={styles.input}
-        color={"#0000"}
-        placeholder="Address line 1"
-        placeholderTextColor={"#7A869A"}
-        // left={}
-        onChangeText={() => {
-          setName(name);
-        }}
-        value={name}
-      />
-    </View>
-    <View style={styles.input}>
-      <Image
-        source={require("../assets/icon/location.png")}
-        style={styles.icons}
-      />
-      <TextInput
-        // style={styles.input}
-        color={"#0000"}
-        placeholder="Address line 2"
-        placeholderTextColor={"#7A869A"}
-        // left={}
-        onChangeText={() => {
-          setName(name);
-        }}
-        value={name}
-      />
-    </View>
-    <Pressable style={styles.pressable}>
-      <Text
-        style={{
-          textAlign: "center",
-          justifyContent: "center",
-          alignItems: "center",
-          alignContent: "center"
-        }}
-      >
-        Done
-      </Text>
-    </Pressable>
-    </>
-      }
+        {loader && userData == undefined ?
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center",
+              alignSelf: 'center',
+              marginTop: '50%'
+            }}
+          >
+            <ActivityIndicator size="large" color={"#F4BD2F"} />
+          </View>
+          :
+
+          <>
+            <Image
+              source={require("../assets/img/Myprofile.png")}
+              style={{
+                // marginLeft: wp('5%'),
+                width: 100,
+                height: 100,
+                alignSelf: "center",
+                borderWidth: 1,
+                borderColor: "#EAE8F2",
+                borderRadius: 100 / 2,
+                marginTop: hp("2%")
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 20,
+                marginTop: hp("1%"),
+                alignSelf: "center",
+                color: "#000",
+                fontWeight: "bold"
+                // fontFamily: "Roboto"
+              }}
+            >
+              {userData ? userData.name : ''}
+            </Text>
+            <View style={styles.input}>
+              <Image
+                source={require("../assets/icon/user.png")}
+                style={styles.icons}
+              />
+              <TextInput
+                color={"#000"}
+                placeholder={userData ? userData.name : ''}
+                placeholderTextColor={"#7A869A"}
+                onChangeText={(name) => {
+                  setName(name);
+                }}
+                value={name}
+              />
+            </View>
+            <View style={styles.input}>
+              <Image
+                source={require("../assets/icon/mark.png")}
+                style={styles.icons}
+              />
+              <TextInput
+                color={"#000"}
+                placeholder={userData ? userData.business_name : ''}
+                placeholderTextColor={"#7A869A"}
+                // left={}
+                onChangeText={(name) => {
+                  setAddress(name);
+                }}
+                value={address}
+              />
+            </View>
+            <View style={styles.input}>
+              <Image
+                source={require("../assets/icon/mail.png")}
+                style={styles.icons}
+              />
+              <TextInput
+                // style={styles.input}
+                color={"#000"}
+                placeholder={userData ? userData.email : ''}
+                placeholderTextColor={"#7A869A"}
+                // left={}
+                onChangeText={(name) => {
+                  setEmail(name);
+                }}
+                value={email}
+              />
+            </View>
+            <View style={styles.input}>
+              <Image
+                source={require("../assets/icon/phone.png")}
+                style={styles.icons}
+              />
+              <TextInput
+                // style={styles.input}
+                color={"#000"}
+                placeholder={userData ? `${userData.phone}` : ''}
+                placeholderTextColor={"#7A869A"}
+                keyboardType={'numeric'}
+                // left={}
+                onChangeText={(name) => {
+                  setPhone(name);
+                }}
+                value={phone}
+              />
+            </View>
+            <View style={styles.input}>
+              <Image
+                source={require("../assets/icon/location.png")}
+                style={styles.icons}
+              />
+              <TextInput
+                color={"#000"}
+                placeholder={userData ? userData.address1 : ''}
+                placeholderTextColor={"#7A869A"}
+                // left={}
+                onChangeText={(name) => {
+                  setAd1(name);
+                }}
+                value={ad1}
+              />
+            </View>
+            <View style={styles.input}>
+              <Image
+                source={require("../assets/icon/location.png")}
+                style={styles.icons}
+              />
+              <TextInput
+                // style={styles.input}
+                color={"#000"}
+                placeholder={userData ? userData.address2 : ''}
+                placeholderTextColor={"#7A869A"}
+                // left={}
+                onChangeText={(name) => {
+                  setAd2(name);
+                }}
+                value={ad2}
+              />
+            </View>
+
+            {name != undefined ||
+              address != undefined ||
+              email != undefined ||
+              phone != undefined ||
+              ad1 != undefined ||
+              ad2 != undefined
+
+              ?
+              <TouchableOpacity style={styles.pressable}
+              onPress={()=>updateProfile()}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    alignContent: "center"
+                  }}
+                >
+                  Done
+                </Text>
+              </TouchableOpacity>
+
+              :
+              null
+            }
+
+          </>
+        }
 
       </ScrollView>
     </SafeAreaView>
@@ -260,8 +287,9 @@ const styles = StyleSheet.create({
     marginTop: hp("2%")
   },
   icons: {
-    marginTop: hp("1.5%"),
-    marginRight: wp("1%")
+    // marginTop: hp("1.5%"),
+    marginRight: wp("1%"),
+    alignSelf: 'center'
   },
   pressable: {
     width: wp("80%"),

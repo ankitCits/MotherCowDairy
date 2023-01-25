@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import {
   DrawerContentScrollView,
@@ -10,11 +10,25 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import AuthContext from "../Context/AuthContext";
+import { userDetails } from "../Api/auth";
 
 const CustomDrawer = props => {
+  const [userData, setUserData] = useState(null);
   const { userSignOut } = useContext(AuthContext);
   const signOut = async () => {
     await userSignOut();
+  };
+
+  useEffect(() => {
+    fetchUserDetail();
+  }, []);
+
+  const fetchUserDetail = async () => {
+    let user = await userDetails();
+    if (user) {
+      console.log("USER_IN_HOME", user);
+      setUserData(user);
+    }
   };
   return (
     <View style={styles.container}>
@@ -28,18 +42,31 @@ const CustomDrawer = props => {
           }}
         >
           <Image source={require("../assets/img/profile.png")} />
-          <Text
-            style={{
-              color: "black",
-              fontSize: 20,
-              // fontFamily: "Roboto-Medium",
-              alignSelf: "center",
-              fontWeight: "bold",
-              marginLeft: wp("5%")
-            }}
-          >
-            David Miller
-          </Text>
+          {userData == null
+            ? <Text
+                style={{
+                  color: "black",
+                  fontSize: 20,
+                  // fontFamily: "Roboto-Medium",
+                  alignSelf: "center",
+                  fontWeight: "bold",
+                  marginLeft: wp("5%")
+                }}
+              >
+                ...
+              </Text>
+            : <Text
+                style={{
+                  color: "black",
+                  fontSize: 20,
+                  // fontFamily: "Roboto-Medium",
+                  alignSelf: "center",
+                  fontWeight: "bold",
+                  marginLeft: wp("5%")
+                }}
+              >
+                {userData.name}
+              </Text>}
         </View>
         <DrawerItemList {...props} />
         <DrawerItem

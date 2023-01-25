@@ -31,6 +31,7 @@ import {
 } from "react-native-responsive-screen";
 import { homeProduct, placedProduct } from "../Api/home";
 import { setMsg } from "../Storage";
+import { userDetails } from "../Api/auth";
 // const image = { "C:\Users\ibsha\Desktop\company\AwesomeProject\android\app\src\img\splashscreen.png"}
 const Home = ({ navigation }) => {
   const [name, setName] = useState();
@@ -42,10 +43,20 @@ const Home = ({ navigation }) => {
   const [hProduct, setHproduct] = useState(null);
   const [addTocard, setAddToCard] = useState([]);
   const [addingCard, setAddingCard] = useState(null);
+  const [userData, setUserData] = useState(null)
 
   useEffect(() => {
+    fetchUserDetail()
     fetchProduct();
   }, []);
+
+  const fetchUserDetail = async () => {
+    let user = await userDetails()
+    if (user) {
+      console.log("USER_IN_HOME", user)
+      setUserData(user)
+    }
+  }
 
   const fetchProduct = async () => {
     setLoader(true);
@@ -65,27 +76,58 @@ const Home = ({ navigation }) => {
     let payload = [];
     for (let i = 0; i < addTocard.length; i++) {
       payload.push({
-        product_id: addTocard[i].id,
-        quantity: 1
+        product_id: addTocard[i].id
       });
     }
 
     console.log("PLACED_PAYLOAD", payload);
-    let products = await placedProduct();
+
+    // const arr = [
+    //   {
+    //      "Country": "BR",
+    //      "New Lv1−Lv2": "#N/A"
+    //   },
+    //   {
+    //      "Country": "BR",
+    //      "New Lv1−Lv2": "#N/A"
+    //   },
+    //   {
+    //      "Country": "",
+    //      "New Lv1−Lv2": "test"
+    //   }];
+    const convert = (payload) => {
+      const res = {};
+      payload.forEach((obj) => {
+        const key = `${obj.product_id}`;
+        if (!res[key]) {
+          res[key] = { ...obj, quantity: 0 };
+        };
+        res[key].quantity += 1;
+      });
+      return Object.values(res);
+    };
+    let newPayload = convert(payload)
+    let products = await placedProduct(newPayload);
     if (products) {
       console.log("H__P__S>", products);
       setLoading(false);
-      if(products.message == "Order Placed"){
+      if (products.message == "Order Placed") {
         await setMsg(products)
         setAddToCard([])
         setAddingCard(null)
-        navigation.navigate('OrderSuccessfull',products)
+        navigation.navigate('OrderSuccessfull', products)
       }
     } else {
       alert("Check Internet Issue");
       setLoading(false);
     }
   };
+
+
+  const calculatePrice = async () => {
+    return addTocard.reduce((n, {max_price}) => n + max_price, 0)
+    console.log(addTocard.reduce((n, {max_price}) => n + max_price, 0))
+  }
   console.log(">>>", addTocard);
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -106,7 +148,13 @@ const Home = ({ navigation }) => {
                 }}
               />
             </TouchableOpacity>
-            <Text style={styles.headertitle}>David Miller</Text>
+            {userData == null ?
+
+              <Text style={styles.headertitle}>...</Text>
+              :
+
+              <Text style={styles.headertitle}>{userData.name}</Text>
+            }
           </View>
           <TouchableOpacity
             onPress={() => navigation.navigate("Notification")}
@@ -195,176 +243,176 @@ const Home = ({ navigation }) => {
         </View>
         {loader
           ? <View
-              style={{
-                alignSelf: "center",
-                justifyContent: "center",
-                // left: "50%",
-                height: hp("30%")
-              }}
-            >
-              <ActivityIndicator size="small" color={"#F4BD2F"} />
-            </View>
+            style={{
+              alignSelf: "center",
+              justifyContent: "center",
+              // left: "50%",
+              height: hp("30%")
+            }}
+          >
+            <ActivityIndicator size="small" color={"#F4BD2F"} />
+          </View>
           : <ScrollView horizontal style={styles.product}>
-              {hProduct.map((item, index) => {
-                return (
-                  <View style={styles.hProduct}>
-                    <Image
-                      source={require("../assets/img/fresh.png")}
+            {hProduct.map((item, index) => {
+              return (
+                <View style={styles.hProduct}>
+                  <Image
+                    source={require("../assets/img/fresh.png")}
+                    style={{
+                      marginTop: hp("-7%"),
+                      // width: wp('15%'),
+                      // height: hp('7%'),
+                      alignSelf: "center"
+                    }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between"
+                    }}
+                  >
+                    <Text
                       style={{
-                        marginTop: hp("-7%"),
-                        // width: wp('15%'),
-                        // height: hp('7%'),
-                        alignSelf: "center"
+                        fontSize: 16,
+                        color: "#000",
+                        alignSelf: "center",
+                        marginLeft: wp("2%")
                       }}
-                    />
-                    <View
+                    >
+                      Nonfat Dry Milk
+                    </Text>
+                    <Text
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
+                        fontSize: 15,
+                        color: "#7A869A",
+                        alignSelf: "center",
+                        marginRight: wp("2%")
+                      }}
+                    >
+                      500 ml
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginTop: hp("2%")
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: "#000",
+                        alignSelf: "center",
+                        marginLeft: wp("2%"),
+                        fontWeight: "bold"
+                      }}
+                    >
+                      $10.00
+                    </Text>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#F4BD2F",
+                        width: wp("16%"),
+                        height: hp("4%"),
+                        borderRadius: 10,
+                        alignSelf: "center",
+                        marginRight: wp("2%"),
+                        justifyContent: "center"
+                      }}
+                      onPress={() => {
+                        setAddingCard(item);
+                        setModalVisible(true);
                       }}
                     >
                       <Text
                         style={{
-                          fontSize: 16,
-                          color: "#000",
-                          alignSelf: "center",
-                          marginLeft: wp("2%")
-                        }}
-                      >
-                        Nonfat Dry Milk
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          color: "#7A869A",
-                          alignSelf: "center",
-                          marginRight: wp("2%")
-                        }}
-                      >
-                        500 ml
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        marginTop: hp("2%")
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: "#000",
-                          alignSelf: "center",
-                          marginLeft: wp("2%"),
-                          fontWeight: "bold"
-                        }}
-                      >
-                        $10.00
-                      </Text>
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "#F4BD2F",
-                          width: wp("16%"),
-                          height: hp("4%"),
-                          borderRadius: 10,
+                          fontSize: 13,
+                          color: "#FFF",
                           alignSelf: "center",
                           marginRight: wp("2%"),
                           justifyContent: "center"
-                        }}
-                        onPress={() => {
-                          setAddingCard(item);
-                          setModalVisible(true);
+                          // marginTop: hp("1%")
                         }}
                       >
-                        <Text
-                          style={{
-                            fontSize: 13,
-                            color: "#FFF",
-                            alignSelf: "center",
-                            marginRight: wp("2%"),
-                            justifyContent: "center"
-                            // marginTop: hp("1%")
-                          }}
-                        >
-                          ADD
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                        ADD
+                      </Text>
+                    </TouchableOpacity>
                   </View>
-                );
-              })}
-            </ScrollView>}
+                </View>
+              );
+            })}
+          </ScrollView>}
 
         {addTocard.length != 0
           ? <View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#F4BD2F",
+                width: wp("95%"),
+                height: hp("8%"),
+                borderRadius: 10,
+                alignSelf: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                // bottom:20
+                position: "absolute",
+                bottom: 7
+              }}
+
+              onPress={() => {
+                placedProducts();
+              }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{
+                    width: wp("13%"),
+                    height: hp("6%"),
+                    borderRadius: 7,
+                    alignSelf: "center",
+                    backgroundColor: "#FFFFFF",
+                    marginLeft: wp("2%")
+                  }}
+                >
+                  <Image
+                    source={require("../assets/icon/store.png")}
+                    style={{ alignSelf: "center", marginTop: hp("1%") }}
+                  />
+                </View>
+                <View style={{ alignSelf: "center", marginLeft: wp("2%") }}>
+                  <Text style={{ fontSize: 16, color: "#fff" }}>
+                    {addTocard.length} Items
+                  </Text>
+                  <Text style={{ fontSize: 12, color: "#fff" }}>{addTocard.reduce((n, {max_price}) => n + max_price, 0)}</Text>
+                </View>
+              </View>
+
               <TouchableOpacity
                 style={{
-                  backgroundColor: "#F4BD2F",
-                  width: wp("95%"),
-                  height: hp("8%"),
-                  borderRadius: 10,
-                  alignSelf: "center",
                   flexDirection: "row",
-                  justifyContent: "space-between",
-                  // bottom:20
-                  position: "absolute",
-                  bottom: 7
+                  alignSelf: "center",
+                  marginRight: wp("2%")
                 }}
-
                 onPress={() => {
                   placedProducts();
                 }}
               >
-                <View style={{ flexDirection: "row" }}>
-                  <View
-                    style={{
-                      width: wp("13%"),
-                      height: hp("6%"),
-                      borderRadius: 7,
-                      alignSelf: "center",
-                      backgroundColor: "#FFFFFF",
-                      marginLeft: wp("2%")
-                    }}
-                  >
-                    <Image
-                      source={require("../assets/icon/store.png")}
-                      style={{ alignSelf: "center", marginTop: hp("1%") }}
-                    />
-                  </View>
-                  <View style={{ alignSelf: "center", marginLeft: wp("2%") }}>
-                    <Text style={{ fontSize: 16, color: "#fff" }}>
-                      {addTocard.length} Items
-                    </Text>
-                    <Text style={{ fontSize: 12, color: "#fff" }}>$ 20.00</Text>
-                  </View>
-                </View>
 
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    alignSelf: "center",
-                    marginRight: wp("2%")
-                  }}
-                  onPress={() => {
-                    placedProducts();
-                  }}
-                >
-                  
-                  {
-                    loading ?
+                {
+                  loading ?
                     <ActivityIndicator size="small" color={"#fff"} />
                     :
 
                     <>
-                    <Text style={{ color: "#fff" }}>Place Order</Text>
-                    <Righta name="right" size={20} color="#FFF" />
+                      <Text style={{ color: "#fff" }}>Place Order</Text>
+                      <Righta name="right" size={20} color="#FFF" />
                     </>
 
-                  }
-                </TouchableOpacity>
+                }
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
+          </View>
           : null}
       </ScrollView>
 
@@ -382,194 +430,194 @@ const Home = ({ navigation }) => {
         >
           {addingCard != null
             ? <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <View style={{}}>
+              <View style={styles.modalView}>
+                <View style={{}}>
+                  <View
+                    style={{
+                      backgroundColor: "#7A869A",
+                      width: widthPercentageToDP("20%"),
+                      height: heightPercentageToDP("0.5%"),
+                      alignSelf: "center",
+                      borderRadius: 3
+                    }}
+                  />
+                  <View
+                    style={{
+                      marginTop: "8%",
+                      bottom: 0,
+                      right: "15%"
+                    }}
+                  >
+                    <Text style={styles.modalText}>Order Confirmation</Text>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: "white",
+                      width: widthPercentageToDP("80%"),
+                      height: heightPercentageToDP("28%"),
+                      borderRadius: 10,
+                      marginTop: heightPercentageToDP("2%")
+                    }}
+                  >
                     <View
                       style={{
-                        backgroundColor: "#7A869A",
-                        width: widthPercentageToDP("20%"),
-                        height: heightPercentageToDP("0.5%"),
-                        alignSelf: "center",
-                        borderRadius: 3
-                      }}
-                    />
-                    <View
-                      style={{
-                        marginTop: "8%",
-                        bottom: 0,
-                        right: "15%"
+                        flexDirection: "row",
+                        marginTop: heightPercentageToDP("2%"),
+                        justifyContent: "space-between"
                       }}
                     >
-                      <Text style={styles.modalText}>Order Confirmation</Text>
-                    </View>
-                    <View
-                      style={{
-                        backgroundColor: "white",
-                        width: widthPercentageToDP("80%"),
-                        height: heightPercentageToDP("28%"),
-                        borderRadius: 10,
-                        marginTop: heightPercentageToDP("2%")
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginTop: heightPercentageToDP("2%"),
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <View
-                            style={{
-                              height: heightPercentageToDP("2%"),
-                              backgroundColor: "#F4BD2F",
-                              width: widthPercentageToDP("1%"),
-                              borderRadius: 5,
-                              marginLeft: widthPercentageToDP("5%"),
-                              alignSelf: "center"
-                            }}
-                          />
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              // fontFamily: "Roboto-Medium",
-                              fontWeight: "bold",
-                              color: "#000",
-                              marginLeft: widthPercentageToDP("3%")
-                            }}
-                          >
-                            Your Order
-                          </Text>
-                        </View>
-                        <View>
-                          <Image
-                            source={require("../assets/icon/check.png")}
-                            style={{
-                              alignSelf: "center",
-                              marginRight: widthPercentageToDP("2%")
-                            }}
-                          />
-                        </View>
-                      </View>
-                      <Text
-                        style={{
-                          color: "#000",
-                          fontSize: 14,
-                          // fontFamily: "Roboto",
-                          fontWeight: "500",
-                          marginLeft: widthPercentageToDP("5%"),
-                          marginTop: heightPercentageToDP("2%")
-                        }}
-                      >
-                        {addingCard.name}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "#7A869A",
-                          fontSize: 12,
-                          // fontFamily: "Roboto",
-                          marginLeft: widthPercentageToDP("5%")
-                        }}
-                      >
-                        {addingCard.single_packet_quantity}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          // fontFamily: "Roboto-Medium",
-                          fontWeight: "bold",
-                          color: "#000",
-                          marginLeft: widthPercentageToDP("5%"),
-                          marginTop: heightPercentageToDP("1.5%")
-                        }}
-                      >
-                        Delivery Address
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginLeft: widthPercentageToDP("5%"),
-                          marginTop: heightPercentageToDP("1%")
-                        }}
-                      >
+                      <View style={{ flexDirection: "row" }}>
                         <View
                           style={{
-                            backgroundColor: "#F5F5F5",
-                            width: widthPercentageToDP("11%"),
-                            height: heightPercentageToDP("5.5%"),
-                            borderRadius: 5
-                          }}
-                        >
-                          <Image
-                            source={require("../assets/img/bike.png")}
-                            style={{
-                              alignSelf: "center",
-                              marginTop: heightPercentageToDP("1%")
-                            }}
-                          />
-                        </View>
-                        <Image
-                          source={require("../assets/icon/location.png")}
-                          style={{
-                            alignSelf: "center",
-                            marginLeft: widthPercentageToDP("2%")
+                            height: heightPercentageToDP("2%"),
+                            backgroundColor: "#F4BD2F",
+                            width: widthPercentageToDP("1%"),
+                            borderRadius: 5,
+                            marginLeft: widthPercentageToDP("5%"),
+                            alignSelf: "center"
                           }}
                         />
                         <Text
                           style={{
-                            color: "#7A869A",
-                            fontSize: 12,
-                            alignSelf: "center",
-                            marginLeft: widthPercentageToDP("1%")
+                            fontSize: 20,
+                            // fontFamily: "Roboto-Medium",
+                            fontWeight: "bold",
+                            color: "#000",
+                            marginLeft: widthPercentageToDP("3%")
                           }}
                         >
-                          725 5th Ave, NY 1055, New York
+                          Your Order
                         </Text>
                       </View>
+                      <View>
+                        <Image
+                          source={require("../assets/icon/check.png")}
+                          style={{
+                            alignSelf: "center",
+                            marginRight: widthPercentageToDP("2%")
+                          }}
+                        />
+                      </View>
                     </View>
-                    <View
+                    <Text
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+                        color: "#000",
+                        fontSize: 14,
+                        // fontFamily: "Roboto",
+                        fontWeight: "500",
+                        marginLeft: widthPercentageToDP("5%"),
+                        marginTop: heightPercentageToDP("2%")
+                      }}
+                    >
+                      {addingCard.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#7A869A",
+                        fontSize: 12,
+                        // fontFamily: "Roboto",
+                        marginLeft: widthPercentageToDP("5%")
+                      }}
+                    >
+                      {addingCard.single_packet_quantity}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        // fontFamily: "Roboto-Medium",
+                        fontWeight: "bold",
+                        color: "#000",
+                        marginLeft: widthPercentageToDP("5%"),
                         marginTop: heightPercentageToDP("1.5%")
                       }}
                     >
-                      <Text style={{ fontSize: 16, color: "#000" }}>
-                        Cash on Delivery
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: "#000",
-                          fontWeight: "bold"
-                        }}
-                      >
-                        {addingCard.max_price}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
+                      Delivery Address
+                    </Text>
+                    <View
                       style={{
-                        backgroundColor: "#F4BD2F",
-                        width: widthPercentageToDP("80%"),
-                        height: heightPercentageToDP("6%"),
-                        borderRadius: 10,
-                        alignSelf: "center",
-                        marginTop: heightPercentageToDP("1.5%"),
-                        justifyContent: "center"
-                      }}
-                      onPress={() => {
-                        console.log(">>ADDING_CARD", addingCard);
-                        let old = addTocard;
-                        addTocard.push(addingCard);
-                        setAddToCard(old);
-                        setModalVisible(!modalVisible);
+                        flexDirection: "row",
+                        marginLeft: widthPercentageToDP("5%"),
+                        marginTop: heightPercentageToDP("1%")
                       }}
                     >
-                      <Text style={styles.textStyle}>Done</Text>
-                    </TouchableOpacity>
+                      <View
+                        style={{
+                          backgroundColor: "#F5F5F5",
+                          width: widthPercentageToDP("11%"),
+                          height: heightPercentageToDP("5.5%"),
+                          borderRadius: 5
+                        }}
+                      >
+                        <Image
+                          source={require("../assets/img/bike.png")}
+                          style={{
+                            alignSelf: "center",
+                            marginTop: heightPercentageToDP("1%")
+                          }}
+                        />
+                      </View>
+                      <Image
+                        source={require("../assets/icon/location.png")}
+                        style={{
+                          alignSelf: "center",
+                          marginLeft: widthPercentageToDP("2%")
+                        }}
+                      />
+                      <Text
+                        style={{
+                          color: "#7A869A",
+                          fontSize: 12,
+                          alignSelf: "center",
+                          marginLeft: widthPercentageToDP("1%")
+                        }}
+                      >
+                        725 5th Ave, NY 1055, New York
+                      </Text>
+                    </View>
                   </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginTop: heightPercentageToDP("1.5%")
+                    }}
+                  >
+                    <Text style={{ fontSize: 16, color: "#000" }}>
+                      Cash on Delivery
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: "#000",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      {addingCard.max_price}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "#F4BD2F",
+                      width: widthPercentageToDP("80%"),
+                      height: heightPercentageToDP("6%"),
+                      borderRadius: 10,
+                      alignSelf: "center",
+                      marginTop: heightPercentageToDP("1.5%"),
+                      justifyContent: "center"
+                    }}
+                    onPress={() => {
+                      console.log(">>ADDING_CARD", addingCard);
+                      let old = addTocard;
+                      addTocard.push(addingCard);
+                      setAddToCard(old);
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Done</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
+            </View>
             : null}
         </TouchableOpacity>
       </Modal>

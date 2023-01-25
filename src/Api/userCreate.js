@@ -21,7 +21,7 @@ export const userCreate = (
     myHeaders.append("Content-Type", "application/json");
 
     var formdata = new FormData();
-    formdata.append("name", cname);
+    formdata.append("name", name);
     formdata.append("email", email);
     formdata.append("password", password);
     formdata.append("business_name", address);
